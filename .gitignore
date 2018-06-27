@@ -23,3 +23,13 @@ hs_err_pid*
 target/
 .idea
 kafka-connect-transform-tombstone.iml
+
+# gradle
+bin
+build
+.gradle
+*.jar
+*.class
+gradle/
+target/
+
