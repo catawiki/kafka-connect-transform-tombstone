@@ -1,4 +1,7 @@
-apply plugin: 'java'
+// Apply the java-library plugin to add support for Java Library
+apply plugin: 'java-library'
+// Apply the shadow plugin for creating uberjars/fat jars
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'maven'
 
 group = 'com.catawiki'
@@ -6,15 +9,34 @@ version = '0.1.0'
 
 description = """"""
 
-sourceCompatibility = 1.5
-targetCompatibility = 1.5
-
-
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "http://repo.maven.apache.org/maven2" }
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
 
 repositories {
-        
+     jcenter()   
      maven { url "http://repo.maven.apache.org/maven2" }
 }
+
+shadowJar {
+    baseName = 'tombstone'
+    classifier = ''
+    dependencies {
+        // We don't want these dependencies in our shadowJar
+        exclude(dependency('org.apache.kafka:connect-api:1.1.0'))
+    }
+}
+
 dependencies {
-    compileOnly group: 'org.apache.kafka', name: 'connect-api', version:'0.10.2.1'
+    compileOnly group: 'org.apache.kafka', name: 'connect-api', version:'1.1.0'
+    // Note that compileOnly means no test
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
 }
